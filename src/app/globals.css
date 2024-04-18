@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  @apply bg-primary-2;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  /* background: rgb(38, 38, 38); */
+}
+
+.c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
