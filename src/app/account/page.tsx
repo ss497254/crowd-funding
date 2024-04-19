@@ -7,7 +7,7 @@ import { Card } from "@/components";
 import Logo from "/public/Logo.png";
 import { useEthersContext } from "@/contexts/EthersContext";
 
-const Account = () => {
+export default function Account() {
   const { signer } = useEthersContext();
   const [campaigns, setCampaigns] = useState(null);
   const [totalCollected, setTotalCollected] = useState(0);
@@ -109,6 +109,4 @@ const Account = () => {
       </div>
     </main>
   );
-};
-
-export default Account;
+}

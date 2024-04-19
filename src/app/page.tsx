@@ -1,17 +1,32 @@
+import { ethers } from "ethers";
 import Image from "next/image";
+import { Suspense } from "react";
 
 import { Card } from "@/components";
+import connectBlockchain from "@/utils/connectBlockchain";
 import Logo from "../../public/Logo.png";
 
 const fetchCampaigns = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/campaigns`, {
-    method: "GET",
-    cache: "no-cache",
-  });
-  const data = await res.json();
-  var campaigns = data.campaigns;
+  const { contract } = connectBlockchain();
+  let allCampaigns: any[] = await contract.getCampaigns();
 
-  if (!campaigns) campaigns = [];
+  const campaigns = allCampaigns.map((campaign, i) => ({
+    id: i,
+    owner: campaign.owner,
+    title: campaign.title,
+    description: campaign.description,
+    imageUrl: campaign.imageUrl,
+    target: ethers.formatEther(campaign.target.toString()),
+    deadline: Number(campaign.deadline),
+    collectedAmount: parseFloat(
+      ethers.formatEther(campaign.collectedAmount.toString())
+    ),
+    withdrawedAmount: ethers.formatEther(campaign.withdrawedAmount.toString()),
+    donations: campaign.donations.map((donation) => ({
+      donator: donation.donator,
+      amount: ethers.formatEther(donation.amount.toString()),
+    })),
+  }));
 
   campaigns.sort((a, b) => b.collectedAmount - a.collectedAmount);
 
@@ -24,17 +39,16 @@ const fetchCampaigns = async () => {
   return { campaigns: tops, donationCount, campaignCount: campaigns.length };
 };
 
-const fetchTotalCollected = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/total`, {
-    method: "GET",
-    cache: "no-cache",
-  });
-  const data = await res.json();
-  return data.total || 0;
+const getTotalCollected = async () => {
+  const { contract } = connectBlockchain();
+
+  const total = await contract.totalCollected();
+
+  return ethers.formatEther(total.toString());
 };
 
-const Home = async () => {
-  const totalCollected = await fetchTotalCollected();
+export default async function Home() {
+  const totalCollected = await getTotalCollected();
   const { campaigns, campaignCount, donationCount } = await fetchCampaigns();
 
   return (
@@ -92,13 +106,13 @@ const Home = async () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {campaigns?.map((campaign) => (
-            <Card campaign={campaign} key={campaign.id} />
-          ))}
+          <Suspense fallback={<p>Loading...</p>}>
+            {campaigns?.map((campaign) => (
+              <Card campaign={campaign} key={campaign.id} />
+            ))}
+          </Suspense>
         </div>
       )}
     </div>
   );
-};
-
-export default Home;
+}
