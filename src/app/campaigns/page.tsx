@@ -1,15 +1,8 @@
 import { Card } from "@/components";
+import { getCampaigns } from "@/utils/getCampaigns";
 
-const fetchCampaigns = async (sort: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/campaigns`, {
-    method: "GET",
-    cache: "no-cache",
-  });
-  const data = await res.json();
-  var campaigns = data.campaigns;
-
-  if (!campaigns) campaigns = [];
-
+const filterCampaigns = async (sort: string) => {
+  const { campaigns } = await getCampaigns();
   if (sort === undefined || sort === null) return campaigns;
   else if (sort === "newest") return campaigns.slice(-9).reverse();
 
@@ -19,7 +12,7 @@ const fetchCampaigns = async (sort: string) => {
 };
 
 const Campaigns = async ({ searchParams }) => {
-  const campaigns = await fetchCampaigns(searchParams.sort);
+  const campaigns = await filterCampaigns(searchParams.sort);
 
   return (
     <div>

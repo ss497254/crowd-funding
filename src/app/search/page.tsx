@@ -1,20 +1,13 @@
 import React from "react";
 
 import { Card } from "@/components";
+import { getCampaigns } from "@/utils/getCampaigns";
 
-const findCampaigns = async (query) => {
+const findCampaigns = async (query: string) => {
   if (!query) return null;
 
   const words = query.split(" ");
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/campaigns`, {
-    method: "GET",
-    cache: "no-cache",
-  });
-  const data = await res.json();
-  var campaigns = data.campaigns;
-
-  if (!campaigns) campaigns = [];
+  const { campaigns } = await getCampaigns();
 
   const priorityCampaigns = campaigns.filter(
     (campaign) =>

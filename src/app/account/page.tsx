@@ -15,9 +15,7 @@ export default function Account() {
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/campaigns?owner=${signer?.address}`
-      );
+      const res = await fetch(`/api/campaigns?owner=${signer?.address}`);
       const data = await res.json();
       var campaigns = data.campaigns;
 
