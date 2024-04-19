@@ -5,39 +5,7 @@ import { Suspense } from "react";
 import { Card } from "@/components";
 import connectBlockchain from "@/utils/connectBlockchain";
 import Logo from "../../public/Logo.png";
-
-const fetchCampaigns = async () => {
-  const { contract } = connectBlockchain();
-  let allCampaigns: any[] = await contract.getCampaigns();
-
-  const campaigns = allCampaigns.map((campaign, i) => ({
-    id: i,
-    owner: campaign.owner,
-    title: campaign.title,
-    description: campaign.description,
-    imageUrl: campaign.imageUrl,
-    target: ethers.formatEther(campaign.target.toString()),
-    deadline: Number(campaign.deadline),
-    collectedAmount: parseFloat(
-      ethers.formatEther(campaign.collectedAmount.toString())
-    ),
-    withdrawedAmount: ethers.formatEther(campaign.withdrawedAmount.toString()),
-    donations: campaign.donations.map((donation) => ({
-      donator: donation.donator,
-      amount: ethers.formatEther(donation.amount.toString()),
-    })),
-  }));
-
-  campaigns.sort((a, b) => b.collectedAmount - a.collectedAmount);
-
-  const tops = campaigns.slice(0, 9);
-  const donationCount = campaigns.reduce(
-    (total, campaign) => total + campaign.donations.length,
-    0
-  );
-
-  return { campaigns: tops, donationCount, campaignCount: campaigns.length };
-};
+import { getCampaigns } from "@/utils/getCampaigns";
 
 const getTotalCollected = async () => {
   const { contract } = connectBlockchain();
@@ -49,7 +17,7 @@ const getTotalCollected = async () => {
 
 export default async function Home() {
   const totalCollected = await getTotalCollected();
-  const { campaigns, campaignCount, donationCount } = await fetchCampaigns();
+  const { campaigns, campaignCount, donationCount } = await getCampaigns();
 
   return (
     <div>
@@ -65,11 +33,11 @@ export default async function Home() {
                 height={50}
               />
               <h1 className="text-2xl font-semibold md:text-4xl">
-                Welcome to Fund Seed
+                Welcome to Crowd Funding
               </h1>
             </div>
             <p className="mt-4 mb-8 text-sm md:text-lg">
-              Fund Seed is a decentralized crowdfunding platform built on
+              Crowd Funding is a decentralized crowdfunding platform built on
               Ethereum. It allows anyone to create a campaign and raise funds.
               What we have achieved so far:
             </p>
