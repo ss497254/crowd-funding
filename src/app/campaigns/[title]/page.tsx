@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Image from "next/image";
@@ -54,7 +55,7 @@ const CampaignDetails = () => {
     <main>
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full h-full max-h-[300px] md:max-h-none md:h-[400px] xl:h-[500px]">
-          <Image
+          <img
             className="w-full object-cover h-full max-h-[300px] md:max-h-none"
             src={campaign?.imageUrl}
             alt={campaign?.title}
