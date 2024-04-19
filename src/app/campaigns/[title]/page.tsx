@@ -25,7 +25,7 @@ const CampaignDetails = () => {
     campaign.donations.sort((a, b) => b.amount - a.amount);
     const tops = campaign.donations.slice(0, 10);
     setTopDonations(tops);
-  }, []);
+  }, [campaign, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +54,7 @@ const CampaignDetails = () => {
     <main>
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full h-full max-h-[300px] md:max-h-none md:h-[400px] xl:h-[500px]">
-          <img
+          <Image
             className="w-full object-cover h-full max-h-[300px] md:max-h-none"
             src={campaign?.imageUrl}
             alt={campaign?.title}

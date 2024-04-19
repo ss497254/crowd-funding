@@ -29,7 +29,7 @@ const WithdrawModal = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [modalRef]);
+  }, [modalRef, setIsOpen]);
 
   const handleClick = async (type) => {
     setLoading(true);

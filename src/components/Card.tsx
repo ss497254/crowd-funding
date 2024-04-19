@@ -36,7 +36,7 @@ const Card = ({ campaign, user = undefined }) => {
       onClick={handleClickCard}
       className="w-full bg-white border shadow cursor-pointer"
     >
-      <img
+      <Image
         className="w-full h-[210px] md:h-[200px] xl:h-[264px]"
         loading="lazy"
         src={campaign.imageUrl}

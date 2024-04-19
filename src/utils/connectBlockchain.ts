@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import SmartContract from "../../smart-contract/artifacts/contracts/CrowdFunding.sol/CrowdFunding.json";
 
-export default () => {
+export default function connectBlockchain() {
   const provider = new ethers.JsonRpcProvider(
     process.env.NEXT_PUBLIC_PROVIDER_URL
   );
@@ -13,4 +13,4 @@ export default () => {
   );
 
   return { contract, provider, signer };
-};
+}

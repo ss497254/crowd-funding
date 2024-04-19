@@ -19,7 +19,7 @@ const AlertModal = ({ setIsOpen, campaignId }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [modalRef]);
+  }, [modalRef, setIsOpen]);
 
   const handleClick = async (answer) => {
     if (answer === "yes") {
@@ -39,26 +39,26 @@ const AlertModal = ({ setIsOpen, campaignId }) => {
     <main className="bg-[rgba(0,0,0,.7)] h-[100vh] flex items-center justify-center w-full fixed z-50 top-0 left-0 p-4">
       <div
         ref={modalRef}
-        className="bg-neutral-800 flex flex-col sm:flex-row justify-center sm:justify-start rounded-lg p-4 h-full sm:h-auto w-full md:w-2/3 lg:w-1/2 xl:w-1/3 items-center"
+        className="flex flex-col items-center justify-center w-full h-full p-4 rounded-lg bg-neutral-800 sm:flex-row sm:justify-start sm:h-auto md:w-2/3 lg:w-1/2 xl:w-1/3"
       >
         <div className="pr-4">
           <BiSolidErrorCircle className="mb-8 sm:mb-0 text-[148px] md:text-[164px] text-indigo-500" />
         </div>
-        <div className="flex sm:block flex-col items-center gap-4 sm:gap-0">
-          <h3 className="font-semibold text-2xl">Are you sure?</h3>
+        <div className="flex flex-col items-center gap-4 sm:block sm:gap-0">
+          <h3 className="text-2xl font-semibold">Are you sure?</h3>
           <p className="text-center sm:text-start">
             Are you sure you want to end this campaign?
           </p>
-          <div className="mt-4 flex justify-center md:justify-end gap-4 font-semibold">
+          <div className="flex justify-center gap-4 mt-4 font-semibold md:justify-end">
             <ClientButton
               onClick={() => handleClick("yes")}
-              className="bg-indigo-500 border-2 border-indigo-500 py-2 px-4 rounded-lg hover:border-indigo-600 hover:bg-indigo-600 transition-all duration-200"
+              className="px-4 py-2 transition-all duration-200 bg-indigo-500 border-2 border-indigo-500 rounded-lg hover:border-indigo-600 hover:bg-indigo-600"
             >
               Yes, end it.
             </ClientButton>
             <ClientButton
               onClick={() => handleClick("no")}
-              className="border-2 border-indigo-500 text-indigo-500 py-2 px-4 rounded-lg hover:border-indigo-600 hover:bg-indigo-600 transition-all duration-200  hover:text-neutral-200"
+              className="px-4 py-2 text-indigo-500 transition-all duration-200 border-2 border-indigo-500 rounded-lg hover:border-indigo-600 hover:bg-indigo-600 hover:text-neutral-200"
             >
               No
             </ClientButton>
